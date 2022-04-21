@@ -1,3 +1,6 @@
+const calcDisplay = document.querySelector('#calc-display');
+const buttons = document.querySelectorAll('button');
+
 const add = function (num1, num2) {
     return num1 + num2;
 }
