@@ -22,11 +22,6 @@ body {
     margin-top: 5rem;
 }
 
-#calc-display, button {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
 #calc-display {
     background-color: #A9A9A9;
     width: 100%;
@@ -38,6 +33,8 @@ body {
     padding-right: 0.5rem;
     font-family: 'Orbitron', monospace;
     color: white;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 .btn-div {
@@ -54,6 +51,8 @@ button {
     border: 1px solid #c4c4c4;
     border-radius: 3px;
     color: #080808;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 button:hover {
