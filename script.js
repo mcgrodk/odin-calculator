@@ -1,85 +1,128 @@
-const calcDisplay = document.querySelector('#calc-display');
+const display = document.querySelector('#display');
+display.textContent = '0';
+
 const btnClear = document.querySelector('#btn-clear');
+btnClear.addEventListener('click', clear);
+
+const btnEquals = document.querySelector('#btn-equals');
+btnEquals.addEventListener('click', () => {
+  operate();
+  operators.forEach((operator) => {
+    operator.classList.remove('current-op');
+    })
+});
+
 const btnDel = document.querySelector('#btn-del');
-const numbers = document.querySelectorAll('.number');
-const operators = document.querySelectorAll('.operator');
+btnDel.addEventListener('click', () => {
+  display.textContent = deleteLastChar(display.textContent);
+});
+
 const btnDecimal = document.querySelector('#btn-decimal');
+btnDecimal.addEventListener('click', () => {
+  if(display.textContent.includes('.') == true) {
+    return;
+  } else display.textContent += '.';
+});
 
-calcDisplay.textContent = '0';
+let initialNum = null;
+let previousOperand = null;
+let nextOperand = null;
+let currentOperator;
 
-let calcTotal;
-
+const numbers = document.querySelectorAll('.number');
 numbers.forEach((number) => {
   number.addEventListener('click', () => {
-    if (calcDisplay.textContent === '0') calcDisplay.textContent = '';
-    if (calcDisplay.textContent.length >= 11)  {
+    if (display.textContent === '0') display.textContent = '';
+    
+    if (initialNum !== null) {
+      previousOperand = initialNum;
+      initialNum = null;
+      display.textContent = '';
+    }
+    
+    if (display.textContent.length >= 11)  {
       return;
-    } else calcDisplay.textContent += number.value;
+    } else display.textContent += number.value;
 });
 });
 
-btnClear.addEventListener('click', () => {
-  calcDisplay.textContent = '0';
-});
-
-btnDel.addEventListener('click', () => {
-  calcDisplay.textContent = deleteLastChar(calcDisplay.textContent);
-});
-
-btnDecimal.addEventListener('click', () => {
-  if(calcDisplay.textContent.includes('.') == true) {
-    return;
-  } else calcDisplay.textContent += '.';
-});
-
+const operators = document.querySelectorAll('.operator');
 operators.forEach((operator) => {
   operator.addEventListener('click', () => {
-  storeFirstOperand();
+   initialNum = Number(display.textContent);
+    currentOperator = (operator.id);
+    operator.classList.add('current-op');
+    console.log(initialNum);
   })
 });
 
-function storeFirstOperand(num) {
-  let firstOperand = (parseInt(calcDisplay.textContent));
-  displayValue = '';
-  return;
+function clear() {
+  display.textContent = 0;
+  operators.forEach((operator) => {
+  operator.classList.remove('current-op');
+  })
 }
 
-
-const add = function (num1, num2) {
-    return num1 + num2;
-}
-
-const subtract = function (num1, num2) {
-    return num1 - num2;
-}
-
-const multiply = function (num1, num2) {
-    return num1 * num2;
-}
-
-const divide = function (num1, num2) {
-    return num1 / num2;
-}
-
-const operate = function (operator, num1, num2) {
-    if (operator === '+') return add(num1, num2);
-    if (operator === '-') return subtract(num1, num2);
-    if (operator === '*') return multiply(num1, num2);
-    if (operator === '/') return divide(num1, num2);
-}
-
-const deleteLastChar = function (string) {
-  let delString = string.substring(0, string.length -1);
+function deleteLastChar (string) {
+  if (display.textContent === 'Stop it!') clear();
+  let delString = string.slice(0, -1); 
   if (string.length == 1) {
     return 0;
   }
     else return delString;
 }
 
-/*
-How to add:
-Input one number, then press plus 
-Calc stores the number in previously empty variable
-Input next number, then press equals 
-On hitting equals, returns value of operate() function
-*/
+function add(num1, num2) {
+    return num1 + num2;
+}
+
+function subtract(num1, num2) {
+    return num1 - num2;
+}
+
+function multiply(num1, num2) {
+    return num1 * num2;
+}
+
+function divide(num1, num2) {
+    if (num2 === 0) {
+      return 'Stop it!';
+    } else return num1 / num2;
+}
+
+function operate(currentOperator, previousOperand, nextOperand) {
+  let operator = (currentOperator.value);
+  nextOperand = display.textContent;
+  if (operator === '+') return add(previousOperand, nextOperand);
+  if (operator === '-') return subtract(previousOperand, nextOperand);
+  if (operator === '*') return multiply(previousOperand, nextOperand);
+  if (operator === '/') return divide(previousOperand, nextOperand);
+}
+
+const btnAdd = document.querySelector('#btn-add');
+btnAdd.addEventListener('click', () => {
+  btnSubtract.classList.remove('current-op');
+  btnMultiply.classList.remove('current-op');
+  btnDivide.classList.remove('current-op');
+})
+
+const btnSubtract = document.querySelector('#btn-subtract');
+btnSubtract.addEventListener('click', () => {
+  btnAdd.classList.remove('current-op');
+  btnMultiply.classList.remove('current-op');
+  btnDivide.classList.remove('current-op');
+})
+
+const btnMultiply = document.querySelector('#btn-multiply');
+btnMultiply.addEventListener('click', () => {
+  btnAdd.classList.remove('current-op');
+  btnSubtract.classList.remove('current-op');
+  btnDivide.classList.remove('current-op');
+})
+
+const btnDivide = document.querySelector('#btn-divide');
+btnDivide.addEventListener('click', () => {
+  btnAdd.classList.remove('current-op');
+  btnSubtract.classList.remove('current-op');
+  btnMultiply.classList.remove('current-op');
+})
