@@ -1,24 +1,48 @@
 const calcDisplay = document.querySelector('#calc-display');
-const clearBtn = document.querySelector('#btn-ac');
-const buttons = document.querySelectorAll('button');
+const btnClear = document.querySelector('#btn-clear');
+const btnDel = document.querySelector('#btn-del');
+const numbers = document.querySelectorAll('.number');
+const operators = document.querySelectorAll('.operator');
+const btnDecimal = document.querySelector('#btn-decimal');
 
-let displayValue = document.createElement('p');
-calcDisplay.appendChild(displayValue);
+calcDisplay.textContent = '0';
 
-displayValue.textContent = '0';
+let calcTotal;
 
-buttons.forEach((button) => {
-  button.addEventListener('click', () => {
-    if (displayValue.textContent === '0') displayValue.textContent = '';
-    if (displayValue.textContent.length >= 10)  {
+numbers.forEach((number) => {
+  number.addEventListener('click', () => {
+    if (calcDisplay.textContent === '0') calcDisplay.textContent = '';
+    if (calcDisplay.textContent.length >= 11)  {
       return;
-    } else displayValue.textContent += button.value;
+    } else calcDisplay.textContent += number.value;
 });
 });
 
-clearBtn.addEventListener('click', () => {
-  displayValue.textContent = '0';
+btnClear.addEventListener('click', () => {
+  calcDisplay.textContent = '0';
 });
+
+btnDel.addEventListener('click', () => {
+  calcDisplay.textContent = deleteLastChar(calcDisplay.textContent);
+});
+
+btnDecimal.addEventListener('click', () => {
+  if(calcDisplay.textContent.includes('.') == true) {
+    return;
+  } else calcDisplay.textContent += '.';
+});
+
+operators.forEach((operator) => {
+  operator.addEventListener('click', () => {
+  storeFirstOperand();
+  })
+});
+
+function storeFirstOperand(num) {
+  let firstOperand = (parseInt(calcDisplay.textContent));
+  displayValue = '';
+  return;
+}
 
 
 const add = function (num1, num2) {
@@ -44,3 +68,18 @@ const operate = function (operator, num1, num2) {
     if (operator === '/') return divide(num1, num2);
 }
 
+const deleteLastChar = function (string) {
+  let delString = string.substring(0, string.length -1);
+  if (string.length == 1) {
+    return 0;
+  }
+    else return delString;
+}
+
+/*
+How to add:
+Input one number, then press plus 
+Calc stores the number in previously empty variable
+Input next number, then press equals 
+On hitting equals, returns value of operate() function
+*/

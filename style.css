@@ -63,12 +63,16 @@ button:hover {
     color: #014588;
 }
 
-#btn-ac {
+#btn-clear {
     background-color: #FF3632;
     color: #fff;
 }
 
-#btn-ac:hover {
+#btn-del {
+  font-size: 1.25rem;
+}
+
+#btn-clear:hover {
     background-color: #FF1D18;
 }
 
