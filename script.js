@@ -1,3 +1,9 @@
+// Status:
+// Calc can return integer operations after hitting equals
+// Calc cannot chain operations without hitting equals
+// Calc breaks when hitting zero after first operation
+// Calc can't handle decimal operations
+
 const display = document.querySelector('#display');
 display.textContent = '0';
 
@@ -6,10 +12,13 @@ btnClear.addEventListener('click', clear);
 
 const btnEquals = document.querySelector('#btn-equals');
 btnEquals.addEventListener('click', () => {
+  if (newOperand === null) return;
   operate();
   operators.forEach((operator) => {
     operator.classList.remove('current-op');
     })
+  calcTotal = display.textContent;
+  newOperand = null;
 });
 
 const btnDel = document.querySelector('#btn-del');
@@ -24,8 +33,8 @@ btnDecimal.addEventListener('click', () => {
   } else display.textContent += '.';
 });
 
-let previousOperand = null;
-let nextOperand = null;
+let calcTotal = null;
+let newOperand = null;
 let currentOperator = null;
 
 const numbers = document.querySelectorAll('.number');
@@ -33,10 +42,9 @@ numbers.forEach((number) => {
   number.addEventListener('click', () => {
     if (display.textContent === '0') display.textContent = '';
     
-    if (previousOperand !== null) {
-      nextOperand = previousOperand;
-     previousOperand = null;
+    if (calcTotal !== null) {
       display.textContent = '';
+      newOperand = display.textContent;
     }
     
     if (display.textContent.length >= 11)  {
@@ -48,7 +56,7 @@ numbers.forEach((number) => {
 const operators = document.querySelectorAll('.operator');
 operators.forEach((operator) => {
   operator.addEventListener('click', () => {
-   previousOperand = Number(display.textContent);
+    calcTotal = Number(display.textContent);
     currentOperator = (operator.id);
     operator.classList.add('current-op');
   })
@@ -56,6 +64,8 @@ operators.forEach((operator) => {
 
 function clear() {
   display.textContent = 0;
+  calcTotal = null;
+  newOperand = null;
   operators.forEach((operator) => {
   operator.classList.remove('current-op');
   })
@@ -70,33 +80,36 @@ function deleteLastChar (string) {
     else return delString;
 }
 
-function add(previousOperand, nextOperand) {
-    result = previousOperand + nextOperand;
-    display.textContent = parseFloat(result);
+function add(calcTotal, newOperand) {
+    calcTotal += newOperand;
+    display.textContent = parseFloat(calcTotal);
 }
 
-function subtract(num1, num2) {
-    return num1 - num2;
+function subtract(calcTotal, newOperand) {
+    calcTotal -= newOperand;
+    display.textContent = parseFloat(calcTotal);
 }
 
-function multiply(num1, num2) {
-    return num1 * num2;
+function multiply(calcTotal, newOperand) {
+    calcTotal *= newOperand;
+    display.textContent = parseFloat(calcTotal);
 }
 
-function divide(num1, num2) {
-    if (num2 === 0) {
-      return 'Nope!';
-    } else return num1 / num2;
+function divide(calcTotal, newOperand) {
+    if (newOperand === 0) {
+      display.textContent = 'Nope!';
+    } else calcTotal /= newOperand;
+      display.textContent = parseFloat(calcTotal);
 }
 
 function operate() {
-  nextOperand = Number(display.textContent);
-  console.log(previousOperand);
-  console.log(nextOperand);
-  if (currentOperator === 'btn-add') return add(previousOperand, nextOperand);
-  if (currentOperator === 'btn-subtract') return subtract(previousOperand, nextOperand);
-  if (currentOperator === 'btn-multiply') return multiply(previousOperand, nextOperand);
-  if (currentOperator === 'btn-divide') return divide(previousOperand, nextOperand);
+  newOperand = Number(display.textContent);
+  console.log(calcTotal);
+  console.log(newOperand);
+  if (currentOperator === 'btn-add') return add(calcTotal, newOperand);
+  if (currentOperator === 'btn-subtract') return subtract(calcTotal, newOperand);
+  if (currentOperator === 'btn-multiply') return multiply(calcTotal, newOperand);
+  if (currentOperator === 'btn-divide') return divide(calcTotal, newOperand);
 }
 
 const btnAdd = document.querySelector('#btn-add');
@@ -126,5 +139,3 @@ btnDivide.addEventListener('click', () => {
   btnSubtract.classList.remove('current-op');
   btnMultiply.classList.remove('current-op');
 })
-
-// Figure out relationship between operands in Number event and operate() function
