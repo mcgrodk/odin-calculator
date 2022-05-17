@@ -23,7 +23,10 @@ btnEquals.addEventListener('click', () => {
 
 const btnDel = document.querySelector('#btn-del');
 btnDel.addEventListener('click', () => {
-  display.textContent = deleteLastChar(display.textContent);
+  if (display.textContent === 'Nope!') {
+    clear();
+  }
+  else display.textContent = deleteLastChar(display.textContent);
 });
 
 const btnDecimal = document.querySelector('#btn-decimal');
@@ -72,7 +75,6 @@ function clear() {
 }
 
 function deleteLastChar (string) {
-  if (display.textContent === 'Nope!') clear();
   let delString = string.slice(0, -1); 
   if (string.length == 1) {
     return 0;
@@ -80,36 +82,38 @@ function deleteLastChar (string) {
     else return delString;
 }
 
-function add(calcTotal, newOperand) {
-    calcTotal += newOperand;
-    display.textContent = parseFloat(calcTotal);
+function add(num1, num2) {
+    let result = num1 + num2;
+    return result;
 }
 
-function subtract(calcTotal, newOperand) {
-    calcTotal -= newOperand;
-    display.textContent = parseFloat(calcTotal);
+function subtract(num1, num2) {
+    let result = num1 - num2;
+    return result;
 }
 
-function multiply(calcTotal, newOperand) {
-    calcTotal *= newOperand;
-    display.textContent = parseFloat(calcTotal);
+function multiply(num1, num2) {
+    let result = num1 * num2;
+    return result;
 }
 
-function divide(calcTotal, newOperand) {
-    if (newOperand === 0) {
-      display.textContent = 'Nope!';
-    } else calcTotal /= newOperand;
-      display.textContent = parseFloat(calcTotal);
+function divide(num1, num2) {
+    let result = num1 / num2;
+    return result;
 }
 
 function operate() {
   newOperand = Number(display.textContent);
   console.log(calcTotal);
   console.log(newOperand);
-  if (currentOperator === 'btn-add') return add(calcTotal, newOperand);
-  if (currentOperator === 'btn-subtract') return subtract(calcTotal, newOperand);
-  if (currentOperator === 'btn-multiply') return multiply(calcTotal, newOperand);
-  if (currentOperator === 'btn-divide') return divide(calcTotal, newOperand);
+  if (currentOperator === 'btn-add') display.textContent = parseFloat(add(calcTotal, newOperand));
+  if (currentOperator === 'btn-subtract') display.textContent = parseFloat(subtract(calcTotal, newOperand));
+  if (currentOperator === 'btn-multiply') display.textContent = parseFloat(multiply(calcTotal, newOperand));
+  if (currentOperator === 'btn-divide') {
+    if (newOperand === 0) {
+      display.textContent = 'Nope!'; }
+      else display.textContent = parseFloat(divide(calcTotal, newOperand));
+}
 }
 
 const btnAdd = document.querySelector('#btn-add');
