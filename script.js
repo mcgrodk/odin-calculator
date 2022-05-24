@@ -34,7 +34,7 @@ function operate() {
   
   if (currentOperator === 'btn-add') display.textContent = parseFloat(add(calcTotal, newOperand).toPrecision(11));
   if (currentOperator === 'btn-subtract') display.textContent = parseFloat(subtract(calcTotal, newOperand).toPrecision(11));
-  if (currentOperator === 'btn-multiply') display.textContent = parseFloat(multiply(calcTotal, newOperand)).toPrecision(11);
+  if (currentOperator === 'btn-multiply') display.textContent = parseFloat(multiply(calcTotal, newOperand).toPrecision(11));
   if (currentOperator === 'btn-divide') {
     if (newOperand === 0) {
       display.textContent = 'Nope!'; }
@@ -122,13 +122,12 @@ operators.forEach((operator) => {
 
 btnEquals.addEventListener('click', () => {
   
-  if (newOperand === null) newOperand = Number(display.textContent);
   operate();
   console.log(`${calcTotal}, ${newOperand}`);
   operators.forEach((operator) => {
     operator.classList.remove('current-op');
     })
-  calcTotal = null;
+  calcTotal = display.textContent;
   newOperand = null;
   
 });
