@@ -68,12 +68,12 @@ button:hover {
     color: #fff;
 }
 
-#btn-del {
-  font-size: 1.25rem;
-}
-
 #btn-clear:hover {
     background-color: #FF1D18;
+}
+
+#btn-del {
+  font-size: 1.25rem;
 }
 
 #btn-equals {
