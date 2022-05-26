@@ -86,7 +86,8 @@ btnDel.addEventListener('click', () => {
 });
 
 btnPlusMinus.addEventListener('click', () => {
-  display.textContent = Number(display.textContent) * -1;
+  if (calcTotal !== null && currentOperator === null) return;
+  else display.textContent = Number(display.textContent) * -1;
 })
 
 numbers.forEach((number) => {
