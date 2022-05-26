@@ -48,9 +48,11 @@ function operate() {
   } else calcTotal = parseFloat(divide(calcTotal, newOperand).toPrecision(11));
       break;
 } 
+  
   display.textContent = calcTotal;
   newOperand = null;
   currentOperator = null;
+  
 }
 
 function clear() {
@@ -60,8 +62,6 @@ function clear() {
   operator.classList.remove('current-op');
   })
   display.textContent = 0;
-  
-  console.log(`${calcTotal}, ${newOperand}`);
 }
 
 function deleteLastChar (string) {
@@ -94,13 +94,11 @@ numbers.forEach((number) => {
   number.addEventListener('click', () => {
     if (display.textContent === 'Nope!') clear();
     if (calcTotal !== null && currentOperator === null) clear();
-    if (display.textContent === '0') display.textContent = '';
-   
-  /*
-   if (calcTotal !== null) {
-      display.textContent = '';
-   }
-  */
+    if (display.textContent === '0') display.textContent = ''; 
+    
+    operators.forEach((operator) => {
+      operator.classList.remove('current-op');
+  });
     
    if (display.textContent.length < 11) {
      display.textContent += number.innerText;
@@ -109,20 +107,21 @@ numbers.forEach((number) => {
 });
 
 btnDecimal.addEventListener('click', () => {
-  if(display.textContent.includes('.') === true) {
+  if (display.textContent.includes('.') || calcTotal !== null && currentOperator === null) {
     return;
   } else display.textContent += '.';
 });
 
 operators.forEach((operator) => {
   operator.addEventListener('click', () => {
+    
+    if (calcTotal === null && display.textContent === '0') return;
 
     calcTotal === null ? calcTotal = Number(display.textContent) : operate();
     currentOperator = (operator.id);
     operator.classList.add('current-op');
-    display.textContent = '';
     
-    console.log(`${calcTotal}, ${newOperand}`);
+    display.textContent = '';
   })
 });
 
@@ -131,11 +130,9 @@ btnEquals.addEventListener('click', () => {
     return;
   } else operate();
   
-  console.log(`${calcTotal}, ${newOperand}`);
   operators.forEach((operator) => {
     operator.classList.remove('current-op');
     })
-
 });
 
 btnAdd.addEventListener('click', () => {
