@@ -50,6 +50,7 @@ function operate() {
 } 
   display.textContent = calcTotal;
   newOperand = null;
+  currentOperator = null;
 }
 
 function clear() {
@@ -88,7 +89,7 @@ btnPlusMinus.addEventListener('click', () => {
 
 numbers.forEach((number) => {
   number.addEventListener('click', () => {
-    if (display.textContent === 'Nope!') clear();
+    if (display.textContent === 'Nope!' || display.textContent === calcTotal) clear();
     if (display.textContent === '0') display.textContent = '';
    
   /*
@@ -122,9 +123,9 @@ operators.forEach((operator) => {
 });
 
 btnEquals.addEventListener('click', () => {
-  
-  
-  operate();
+  if (calcTotal === null || currentOperator === null) {
+    return;
+  } else operate();
   
   console.log(`${calcTotal}, ${newOperand}`);
   operators.forEach((operator) => {
