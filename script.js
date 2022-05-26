@@ -80,7 +80,9 @@ display.textContent = '0';
 btnClear.addEventListener('click', clear);
 
 btnDel.addEventListener('click', () => {
-  display.textContent = deleteLastChar(display.textContent);
+  if (calcTotal !== null && currentOperator === null) {
+    return;
+  } else display.textContent = deleteLastChar(display.textContent);
 });
 
 btnPlusMinus.addEventListener('click', () => {
@@ -89,7 +91,8 @@ btnPlusMinus.addEventListener('click', () => {
 
 numbers.forEach((number) => {
   number.addEventListener('click', () => {
-    if (display.textContent === 'Nope!' || display.textContent === calcTotal) clear();
+    if (display.textContent === 'Nope!') clear();
+    if (calcTotal !== null && currentOperator === null) clear();
     if (display.textContent === '0') display.textContent = '';
    
   /*
