@@ -31,17 +31,25 @@ function divide(num1, num2) {
 function operate() {
  
   newOperand = Number(display.textContent);
-  
-  if (currentOperator === 'btn-add') display.textContent = parseFloat(add(calcTotal, newOperand).toPrecision(11));
-  if (currentOperator === 'btn-subtract') display.textContent = parseFloat(subtract(calcTotal, newOperand).toPrecision(11));
-  if (currentOperator === 'btn-multiply') display.textContent = parseFloat(multiply(calcTotal, newOperand).toPrecision(11));
-  if (currentOperator === 'btn-divide') {
-    if (newOperand === 0) {
-      display.textContent = 'Nope!'; }
-      else display.textContent = parseFloat(divide(calcTotal, newOperand).toPrecision(11));
-    
-    calcTotal = display.textContent;
-}
+
+  switch (currentOperator) {
+    case 'btn-add':
+      calcTotal = parseFloat(add(calcTotal, newOperand).toPrecision(11));
+      break;
+    case 'btn-subtract':
+      calcTotal = parseFloat(subtract(calcTotal, newOperand).toPrecision(11));
+      break;
+    case 'btn-multiply':
+      calcTotal = parseFloat(multiply(calcTotal, newOperand).toPrecision(11));
+      break;
+    case 'btn-divide':
+      if(newOperand === 0) {
+        calcTotal = 'Nope!';
+  } else calcTotal = parseFloat(divide(calcTotal, newOperand).toPrecision(11));
+      break;
+} 
+  display.textContent = calcTotal;
+  newOperand = null;
 }
 
 function clear() {
@@ -83,11 +91,11 @@ numbers.forEach((number) => {
     if (display.textContent === 'Nope!') clear();
     if (display.textContent === '0') display.textContent = '';
    
-    /*
+  /*
    if (calcTotal !== null) {
       display.textContent = '';
    }
-   */
+  */
     
    if (display.textContent.length < 11) {
      display.textContent += number.innerText;
@@ -103,15 +111,8 @@ btnDecimal.addEventListener('click', () => {
 
 operators.forEach((operator) => {
   operator.addEventListener('click', () => {
-    
-    if(!calcTotal === null && !newOperand === null) {
-      calcTotal = operate();
-    }
-    
-    if (calcTotal !== null) {
-      newOperand = Number(display.textContent);
-    } else calcTotal = Number(display.textContent);
-    
+
+    calcTotal === null ? calcTotal = Number(display.textContent) : operate();
     currentOperator = (operator.id);
     operator.classList.add('current-op');
     display.textContent = '';
@@ -122,14 +123,14 @@ operators.forEach((operator) => {
 
 btnEquals.addEventListener('click', () => {
   
+  
   operate();
+  
   console.log(`${calcTotal}, ${newOperand}`);
   operators.forEach((operator) => {
     operator.classList.remove('current-op');
     })
-  calcTotal = display.textContent;
-  newOperand = null;
-  
+
 });
 
 btnAdd.addEventListener('click', () => {
