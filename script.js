@@ -95,11 +95,24 @@ numbers.forEach((number) => {
     if (display.textContent === 'Nope!') clear();
     if (calcTotal !== null && currentOperator === null) clear();
     if (display.textContent === '0') display.textContent = ''; 
+
+    // Clears display between hitting operator and inputting new numbers
+    if (currentOperator !== null && btnAdd.classList.contains('current-op') 
+        || currentOperator !== null && btnSubtract.classList.contains('current-op') 
+        || currentOperator !== null && btnMultiply.classList.contains('current-op') 
+        || currentOperator !== null && btnDivide.classList.contains('current-op')) {
+      display.textContent = '';
+    }
+
+    // Clears display between equals and starting new operation
+    if (calcTotal === display.textContent) {
+      display.textContent = '';
+    }
     
     operators.forEach((operator) => {
       operator.classList.remove('current-op');
   });
-    
+
    if (display.textContent.length < 11) {
      display.textContent += number.innerText;
    } else return;
@@ -120,8 +133,7 @@ operators.forEach((operator) => {
     calcTotal === null ? calcTotal = Number(display.textContent) : operate();
     currentOperator = (operator.id);
     operator.classList.add('current-op');
-    
-    display.textContent = '';
+  
   })
 });
 
